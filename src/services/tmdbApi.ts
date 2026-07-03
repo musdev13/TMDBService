@@ -44,4 +44,5 @@ export const getMovieDetails = async (movieId: number) => {
             append_to_response: "credits,videos"
         }
     })
+    return response.data;
 }

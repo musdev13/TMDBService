@@ -1,3 +1,4 @@
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import axios from "axios";
 
 const ACCESS_TOKEN = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
@@ -25,3 +26,22 @@ export const getPopularMovies = async (page = 1) => {
 }
 
 // https://api.themoviedb.org/3/movie/popular?language=uk-UA&page=1
+
+export const searchMovies = async (query: string, page = 1) => {
+    const response = await tmdbApi.get('/search/movie', {
+        params: {
+            query,
+            page
+        }
+    })
+    return response.data;
+}
+
+
+export const getMovieDetails = async (movieId: number) => {
+    const response = await tmdbApi.get(`/movie/${movieId}`, {
+        params: {
+            append_to_response: "credits,videos"
+        }
+    })
+}

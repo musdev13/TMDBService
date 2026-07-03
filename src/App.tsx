@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { getPopularMovies } from "./services/tmdbApi";
+import { getPopularMovies, searchMovies } from "./services/tmdbApi";
 import MovieCard from "./components/MovieCard";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Pagination from "./components/Pagination";
+import SearchForm from "./components/SearchForm";
 
 export interface Movie {
   id: number;
@@ -15,13 +16,24 @@ export interface Movie {
 
 function App() {
   const [page, setPage] = useState<number>(1);
+  const [query, setQuery] = useState<string>("");
 
   const { data, isPending, isFetching, isError, error } = useQuery({
-    queryKey: ["movies", page],
-    queryFn: () => getPopularMovies(page),
+    queryKey: query ? ["movies", "search", query, page] : ["movies", page],
+    queryFn: () => query ? searchMovies(query, page) : getPopularMovies(page),
     placeholderData: keepPreviousData,
     staleTime: 5000 * 60,
   });
+
+  const handleSearch = (newQuery: string) => {
+    setQuery(newQuery);
+    setPage(1); // Скидаємо сторінку на першу для результатів пошуку
+  };
+ 
+  const handleClear = () => {
+    setQuery("");
+    setPage(1); // Скидаємо сторінку при поверненні до популярних фільмів
+  };
 
   const movies: Movie[] = data?.results || [];
   const totalPages = data?.total_pages || 1;
@@ -29,6 +41,7 @@ function App() {
   return (
     <>
       <div className="container mx-auto py-8 px-8">
+        <SearchForm onSearch={handleSearch} onClear={handleClear} currentQuery={query}/>
         <h1 className="font-bold text-center text-blue-600">
           Популярні фільми
         </h1>

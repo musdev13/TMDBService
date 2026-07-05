@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { useState } from "react";
 import { getPopularMovies, searchMovies } from "../services/tmdbApi";
 import MovieCard from "../components/MovieCard";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Pagination from "../components/Pagination";
 import SearchForm from "../components/SearchForm";
+import { useSearchParams } from "react-router";
 
 export interface Movie {
   id: number;
@@ -15,8 +14,10 @@ export interface Movie {
 }
 
 function App() {
-  const [page, setPage] = useState<number>(1);
-  const [query, setQuery] = useState<string>("");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const query = searchParams.get("query") || "";
+  const page = Number(searchParams.get("page")) || 1;
 
   const { data, isPending, isFetching, isError, error } = useQuery({
     queryKey: query ? ["movies", "search", query, page] : ["movies", page],
@@ -26,13 +27,17 @@ function App() {
   });
 
   const handleSearch = (newQuery: string) => {
-    setQuery(newQuery);
-    setPage(1); // Скидаємо сторінку на першу для результатів пошуку
+    setSearchParams({ query: newQuery, page: "1" });
   };
 
   const handleClear = () => {
-    setQuery("");
-    setPage(1); // Скидаємо сторінку при поверненні до популярних фільмів
+    setSearchParams({});
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const newParams = new URLSearchParams(searchParams);
+    newParams.set("page", String(newPage));
+    setSearchParams(newParams);
   };
 
   const movies: Movie[] = data?.results || [];
@@ -63,7 +68,7 @@ function App() {
             <Pagination
               page={page}
               totalPages={totalPages}
-              onPageChange={setPage}
+              onPageChange={handlePageChange}
             />
             <div className="mt-5">
               {movies.map((movie) => (

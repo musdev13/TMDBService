@@ -1,12 +1,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { About } from "./pages/About.tsx";
-import { MainLayout } from "./layouts/MainLayout.tsx";
+import MainLayout from "./layouts/MainLayout.tsx";
+import AuthLayout from "./layouts/AuthLayout.tsx";
+import LoginForm from "./pages/LoginForm.tsx";
+import Home from "./pages/Home.tsx";
+import MovieDetails from "./pages/MovieDetails.tsx";
+import PersonDetails from "./pages/PersonDetails.tsx";
 
 const queryClient = new QueryClient();
 
@@ -17,15 +21,15 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <App />,
+        element: <Home />,
       },
       {
-        path: "/movie",
-        element: (
-          <div className="container mx-auto">
-            <h1 className="text-green-600 text-5xl text-center">Movie</h1>
-          </div>
-        ),
+        path: "/movie/:movieId/:actorId/",
+        element: <MovieDetails />,
+      },
+      {
+        path: "/person/:personId",
+        element: <PersonDetails />,
       },
       {
         path: "/about",
@@ -35,6 +39,13 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
+    element: <AuthLayout />,
+    children: [
+      {
+        index: true,
+        element: <LoginForm />,
+      },
+    ],
   },
 ]);
 

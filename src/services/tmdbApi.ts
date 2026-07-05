@@ -42,3 +42,8 @@ export const getMovieDetails = async (movieId: number) => {
   });
   return response.data;
 };
+
+export const getPersonDetails = async (personId: number) => {
+  const response = await tmdbApi.get(`/person/${personId}`);
+  return response.data;
+};

@@ -6,25 +6,35 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { About } from "./pages/About.tsx";
+import { MainLayout } from "./layouts/MainLayout.tsx";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <App />,
+      },
+      {
+        path: "/movie",
+        element: (
+          <div className="container mx-auto">
+            <h1 className="text-green-600 text-5xl text-center">Movie</h1>
+          </div>
+        ),
+      },
+      {
+        path: "/about",
+        element: <About />,
+      },
+    ],
   },
   {
-    path: "/movie",
-    element: (
-      <div className="container mx-auto">
-        <h1 className="text-green-600 text-5xl text-center">Movie</h1>
-      </div>
-    ),
-  },
-  {
-    path: "/about",
-    element: <About />,
+    path: "login",
   },
 ]);
 

@@ -15,6 +15,7 @@ export default function PersonDetails() {
     queryKey: ["movie", personId],
     queryFn: () => getPersonDetails(Number(personId)),
     enabled: !!personId, // Запит виконується лише якщо є id
+    staleTime: 30 * 1000 * 10,
   });
 
   if (isPending)

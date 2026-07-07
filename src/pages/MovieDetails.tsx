@@ -12,10 +12,14 @@ export const movieDatailQuery = (movieId: number) => {
 };
 
 export const movieDetailLoader = (queryClient: QueryClient) => {
-  async ({ params }: LoaderFunctionArgs) => {
-    const { movieId } = params;
+  return async ({ params }: LoaderFunctionArgs) => {
+    const movieId = Number(params.movieId);
 
-    return queryClient.ensureQueryData(movieDatailQuery(Number(movieId)));
+    if (isNaN(movieId)) {
+      throw new Response("Invalid ID", { status: 400 });
+    }
+
+    return queryClient.ensureQueryData(movieDatailQuery(movieId));
   };
 };
 

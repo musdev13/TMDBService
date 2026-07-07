@@ -3,7 +3,7 @@ import MovieCard from "../components/MovieCard";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import Pagination from "../components/Pagination";
 import SearchForm from "../components/SearchForm";
-import { useSearchParams } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 export interface Movie {
   id: number;
@@ -72,7 +72,9 @@ function App() {
             />
             <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
               {movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                <Link key={movie.id} to={`/movie/${movie.id}`}>
+                  <MovieCard movie={movie} />
+                </Link>
               ))}
             </div>
           </>

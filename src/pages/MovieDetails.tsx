@@ -1,24 +1,32 @@
-import { useParams } from "react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useParams, type LoaderFunctionArgs } from "react-router";
+import { useQuery, type QueryClient } from "@tanstack/react-query";
 import { getMovieDetails } from "../services/tmdbApi";
 
-export default function MovieDetails() {
-  // Отримуємо movieId з URL
-  const { movieId, actorId } = useParams<{
-    movieId: string;
-    actorId: string;
-  }>();
+export const movieDatailQuery = (movieId: number) => {
+  return {
+    queryKey: ["movie", movieId],
+    queryFn: () => getMovieDetails(movieId),
+    enabled: !!movieId, // Запит виконується лише якщо є id
+    staleTime: 5 * 1000 * 60,
+  };
+};
 
-  // Запит до TMDB API через React Query
+export const movieDetailLoader = (queryClient: QueryClient) => {
+  async ({ params }: LoaderFunctionArgs) => {
+    const { movieId } = params;
+
+    return queryClient.ensureQueryData(movieDatailQuery(Number(movieId)));
+  };
+};
+
+export default function MovieDetails() {
+  const { movieId } = useParams<{ movieId: string }>();
+
   const {
     data: movie,
-    isPending,
     isError,
-  } = useQuery({
-    queryKey: ["movie", movieId],
-    queryFn: () => getMovieDetails(Number(movieId)),
-    enabled: !!movieId, // Запит виконується лише якщо є id
-  });
+    isPending,
+  } = useQuery(movieDatailQuery(Number(movieId)));
 
   if (isPending)
     return <p className="text-center">Завантаження деталей фільму...</p>;

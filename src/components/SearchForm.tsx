@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { Button } from "@/shared/ui";
  
 // Інтерфейс для даних форми
 interface SearchFormValues {
@@ -38,20 +39,18 @@ export default function SearchForm({ onSearch, onClear, currentQuery }: SearchFo
         placeholder="Введіть назву фільму..."
         className="flex-1 px-4 py-2 border rounded-md outline-none focus:border-blue-500 transition"
       />
-      <button
+      {/* <button
         type="submit"
         className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-md transition"
       >
         Пошук
-      </button>
+      </button> */}
+      <Button type="submit">
+        Пошук
+      </Button>
+
       {currentQuery && (
-        <button
-          type="button"
-          onClick={handleClear}
-          className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-md transition"
-        >
-          Скинути
-        </button>
+        <Button type="button">Скинути</Button>
       )}
     </form>
   );

@@ -8,7 +8,7 @@ import MovieDetails, { movieDetailLoader } from "@/pages/MovieDetails.tsx";
 import PersonDetails from "@/pages/PersonDetails.tsx";
 import type { QueryClient } from "@tanstack/react-query";
 import ErrorPage from "@/pages/ErrorPage.tsx";
-import { aboutLoader } from "./services/auth.ts";
+import { aboutLoader } from "../services/auth.ts";
 
 export const createRouter = (queryClient: QueryClient) =>
   createBrowserRouter([

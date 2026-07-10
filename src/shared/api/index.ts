@@ -1,0 +1,1 @@
+export {tmdbClient} from "./tmdbClient"

@@ -5,26 +5,26 @@ import {
   useNavigation,
   type ActionFunctionArgs,
 } from "react-router";
+import { loginUser } from "../services/tmdbApi";
 
 // 1. Екшен для обробки авторизації на стороні маршрутизатора
 export async function loginAction({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
+  const username = formData.get("username")?.toString();
+  const password = formData.get("password")?.toString();
 
   // Проста валідація
-  if (!email || !password) {
+  if (!username || !password) {
     return { error: "Будь ласка, заповніть усі поля" };
   }
 
   try {
-    // Тут виконується запит на сервер для автентифікації...
-    console.log("Авторизація користувача:", email);
+    const sessionId = await loginUser(username, password);
 
-    // Імітуємо збереження токена в localStorage
-    localStorage.setItem("userToken", "fake-jwt-token");
+    // Зберігаємо сесію у localStorage для подальших запитів
+    localStorage.setItem("tmdb_session_id", sessionId);
+    localStorage.setItem("username", username);
 
-    // Після успішного екшену перенаправляємо користувача на головну сторінку
     return redirect("/");
   } catch (err: any) {
     // Якщо сервер повернув помилку, повертаємо її в компонент
@@ -59,8 +59,8 @@ export default function Login() {
             Email
           </label>
           <input
-            name="email"
-            type="email"
+            name="username"
+            type="text"
             required
             disabled={isSubmitting}
             className="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"

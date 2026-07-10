@@ -1,14 +1,15 @@
 import { createBrowserRouter } from "react-router";
-import { About } from "@/pages/About.tsx";
-import MainLayout from "@/layouts/MainLayout.tsx";
-import AuthLayout from "@/layouts/AuthLayout.tsx";
-import LoginForm, { loginAction } from "@/pages/LoginForm.tsx";
-import Home from "@/pages/Home.tsx";
-import MovieDetails, { movieDetailLoader } from "@/pages/MovieDetails.tsx";
+import { AboutPage, aboutLoader } from "@/pages/about";
+import MainLayout from "@/pages/layout/MainLayout.tsx";
+import AuthLayout from "@/pages/layout/AuthLayout.tsx";
+// import { LoginForm, loginAction } from "@/features/auth-by-username/";
+import { LoginPage } from "@/pages/login/";
+import { loginAction } from "@/features/auth-by-username";
+import {HomePage} from "@/pages/home";
+import {MovieDetailsPage, movieDetailLoader } from "@/pages/movie-details";
 import PersonDetails from "@/entities/person/ui/PersonDetails.tsx";
 import type { QueryClient } from "@tanstack/react-query";
-import ErrorPage from "@/pages/ErrorPage.tsx";
-import { aboutLoader } from "../services/auth.ts";
+import {ErrorPage} from "@/pages/error";
 
 export const createRouter = (queryClient: QueryClient) =>
     createBrowserRouter([
@@ -19,11 +20,11 @@ export const createRouter = (queryClient: QueryClient) =>
             children: [
                 {
                     index: true,
-                    element: <Home />,
+                    element: <HomePage />,
                 },
                 {
                     path: "/movie/:movieId",
-                    element: <MovieDetails />,
+                    element: <MovieDetailsPage />,
                     loader: movieDetailLoader(queryClient),
                 },
                 {
@@ -32,7 +33,7 @@ export const createRouter = (queryClient: QueryClient) =>
                 },
                 {
                     path: "/about",
-                    element: <About />,
+                    element: <AboutPage />,
                     loader: aboutLoader,
                 },
             ],
@@ -43,7 +44,7 @@ export const createRouter = (queryClient: QueryClient) =>
             children: [
                 {
                     index: true,
-                    element: <LoginForm />,
+                    element: <LoginPage />,
                     action: loginAction,
                 },
             ],

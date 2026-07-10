@@ -1,7 +1,10 @@
 import { Outlet } from "react-router";
 import { NavLink, Link } from "react-router";
+import { isSessionActive } from "@/entities/session";
+import { LogoutButton } from "@/features/logout";
 
 export default function MainLayout() {
+  const isAuth = isSessionActive();
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 text-gray-900">
       {/* Шапка сайту */}
@@ -40,12 +43,14 @@ export default function MainLayout() {
             </NavLink>
           </nav>
           <div>
-            <Link
+            {isAuth ? (<LogoutButton />) : (
+              <Link
               className="px-5 py-3 rounded-2xl bg-lime-600 text-slate-800"
               to="/login"
             >
               Вхід
             </Link>
+          ) }
           </div>
         </div>
       </header>

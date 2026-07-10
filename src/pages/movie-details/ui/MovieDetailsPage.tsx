@@ -1,15 +1,8 @@
-import { useParams, type LoaderFunctionArgs } from "react-router";
-import { useQuery, type QueryClient } from "@tanstack/react-query";
+import { useParams } from "react-router";
+import { useQuery } from "@tanstack/react-query";
 import { movieDatailQuery } from "@/entities/movie";
 
-export const movieDetailLoader = (queryClient: QueryClient) => {
-    return async ({ params }: LoaderFunctionArgs) => {
-        const movieId = Number(params.movieId);
-        return queryClient.ensureQueryData(movieDatailQuery(movieId));
-    };
-};
-
-export default function MovieDetails() {
+export function MovieDetailsPage() {
     const { movieId } = useParams<{ movieId: string }>();
 
     const {

@@ -6,10 +6,10 @@ import {
 } from "@/entities/movie";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Pagination } from "@/shared/ui";
-import SearchForm from "@/components/SearchForm";
+import { SearchForm } from "@/features/search-movie/ui/SearchForm";
 import { Link, useSearchParams } from "react-router";
 
-function App() {
+export function HomePage() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const query = searchParams.get("query") || "";
@@ -83,4 +83,3 @@ function App() {
     );
 }
 
-export default App;

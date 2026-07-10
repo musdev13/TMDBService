@@ -12,7 +12,7 @@ interface SearchFormProps {
     currentQuery: string;
 }
 
-export default function SearchForm({
+export function SearchForm({
     onSearch,
     onClear,
     currentQuery,

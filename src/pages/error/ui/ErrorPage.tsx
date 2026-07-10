@@ -1,6 +1,6 @@
 import { useRouteError, isRouteErrorResponse, Link } from "react-router";
 
-export default function ErrorPage() {
+export function ErrorPage() {
   const error = useRouteError();
   console.error("Помилка маршрутизатора:", error);
 

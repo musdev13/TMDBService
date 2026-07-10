@@ -5,47 +5,47 @@ import AuthLayout from "@/layouts/AuthLayout.tsx";
 import LoginForm, { loginAction } from "@/pages/LoginForm.tsx";
 import Home from "@/pages/Home.tsx";
 import MovieDetails, { movieDetailLoader } from "@/pages/MovieDetails.tsx";
-import PersonDetails from "@/pages/PersonDetails.tsx";
+import PersonDetails from "@/entities/person/ui/PersonDetails.tsx";
 import type { QueryClient } from "@tanstack/react-query";
 import ErrorPage from "@/pages/ErrorPage.tsx";
 import { aboutLoader } from "../services/auth.ts";
 
 export const createRouter = (queryClient: QueryClient) =>
-  createBrowserRouter([
-    {
-      path: "/",
-      element: <MainLayout />,
-      errorElement: <ErrorPage />,
-      children: [
+    createBrowserRouter([
         {
-          index: true,
-          element: <Home />,
+            path: "/",
+            element: <MainLayout />,
+            errorElement: <ErrorPage />,
+            children: [
+                {
+                    index: true,
+                    element: <Home />,
+                },
+                {
+                    path: "/movie/:movieId",
+                    element: <MovieDetails />,
+                    loader: movieDetailLoader(queryClient),
+                },
+                {
+                    path: "/person/:personId",
+                    element: <PersonDetails />,
+                },
+                {
+                    path: "/about",
+                    element: <About />,
+                    loader: aboutLoader,
+                },
+            ],
         },
         {
-          path: "/movie/:movieId",
-          element: <MovieDetails />,
-          loader: movieDetailLoader(queryClient),
+            path: "/login",
+            element: <AuthLayout />,
+            children: [
+                {
+                    index: true,
+                    element: <LoginForm />,
+                    action: loginAction,
+                },
+            ],
         },
-        {
-          path: "/person/:personId",
-          element: <PersonDetails />,
-        },
-        {
-          path: "/about",
-          element: <About />,
-          loader: aboutLoader,
-        },
-      ],
-    },
-    {
-      path: "/login",
-      element: <AuthLayout />,
-      children: [
-        {
-          index: true,
-          element: <LoginForm />,
-          action: loginAction,
-        },
-      ],
-    },
-  ]);
+    ]);

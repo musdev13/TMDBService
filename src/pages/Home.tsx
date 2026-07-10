@@ -1,8 +1,8 @@
-import { getPopularMovies, searchMovies } from "../services/tmdbApi";
-import MovieCard from "../components/MovieCard";
+import { getPopularMovies, searchMovies } from "@/services/tmdbApi";
+import MovieCard from "@/components/MovieCard";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import Pagination from "../components/Pagination";
-import SearchForm from "../components/SearchForm";
+import Pagination from "@/components/Pagination";
+import SearchForm from "@/components/SearchForm";
 import { Link, useSearchParams } from "react-router";
 
 export interface Movie {
